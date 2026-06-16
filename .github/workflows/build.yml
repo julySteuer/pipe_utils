@@ -5,6 +5,7 @@ jobs:
     name: "Building project on os ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: "Cargo build"
         run: "ls && cargo build"
