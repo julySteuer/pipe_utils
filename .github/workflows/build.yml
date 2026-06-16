@@ -1,0 +1,15 @@
+name: Build Project 
+on: [push]
+jobs:
+  build: 
+    name: "Building project on os ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "Cargo build"
+        run: "cargo build"
+      - name: "Cargo test"
+        run: "cargo test" 
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+  
