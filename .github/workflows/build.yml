@@ -1,16 +1,15 @@
-name: Build Project 
+name: Build Project
 on: [push]
 jobs:
-  build: 
+  build:
     name: "Building project on os ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: "Cargo build"
-        run: "cargo build"
+        run: "ls && cargo build"
       - name: "Cargo test"
-        run: "cargo test" 
+        run: "cargo test"
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-  
