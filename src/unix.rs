@@ -21,7 +21,6 @@ pub(crate) mod imp {
     use std::{
         fs::File,
         io::{self, PipeReader, PipeWriter},
-        os::fd::AsFd,
     };
 
     pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
