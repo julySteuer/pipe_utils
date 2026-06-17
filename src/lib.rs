@@ -31,6 +31,13 @@ pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
 }
 
 /*
+ * Helpful when you want to read from a file in a pipe File -> stdin 
+ */
+pub fn file_to_pipe_reader(file: File) -> io::Result<PipeReader> {
+    os::imp::file_to_pipe_reader(file)
+}
+
+/*
  * Duplicates the proceeses stdin and wraps it into a PipeReader
  */
 pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {

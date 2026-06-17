@@ -16,6 +16,7 @@ pub fn dup_fd_to_pipe_writer(as_fd: impl AsFd) -> io::Result<PipeWriter> {
 }
 
 pub(crate) mod imp {
+    use super::{dup_fd, dup_fd_to_pipe_reader, dup_fd_to_pipe_writer};
     use core::convert::From;
     use std::{
         fs::File,
@@ -24,20 +25,22 @@ pub(crate) mod imp {
     };
 
     pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
-        file.as_fd()
-            .try_clone_to_owned()
-            .map(|cloned_fd| PipeWriter::from(cloned_fd))
+        dup_fd(file).map(|cloned_fd| PipeWriter::from(cloned_fd))
+    }
+
+    pub fn file_to_pipe_reader(file: File) -> io::Result<PipeReader> {
+        dup_fd(file).map(|cloned_fd| PipeReader::from(cloned_fd))
     }
 
     pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {
-        super::dup_fd_to_pipe_reader(io::stdin())
+        dup_fd_to_pipe_reader(io::stdin())
     }
 
     pub fn dup_stdout_to_pipe_writer() -> io::Result<PipeWriter> {
-        super::dup_fd_to_pipe_writer(io::stdout())
+        dup_fd_to_pipe_writer(io::stdout())
     }
 
     pub fn dup_stderr_to_pipe_reader() -> io::Result<PipeReader> {
-        super::dup_fd_to_pipe_reader(io::stderr())
+        dup_fd_to_pipe_reader(io::stderr())
     }
 }
