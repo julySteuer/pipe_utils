@@ -12,8 +12,6 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - name: "Build Project"
-        uses: ./.github/workflows/generic_build.yml
       - name: "Upload Artifacts"
         uses: actions/upload-artifact@v7
         with:
