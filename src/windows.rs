@@ -18,6 +18,12 @@ pub fn dup_handle_to_pipe_writer(as_handle: impl AsHandle) -> io::Result<PipeWri
 pub(crate) mod imp {
     use std::io::{self, PipeReader, PipeWriter};
 
+    pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
+        file.as_handle()
+            .try_clone_to_owned()
+            .map(|cloned_fd| PipeWriter::from(cloned_fd))
+    }
+
     pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {
         super::dup_handle_to_pipe_reader(io::stdin())
     }
