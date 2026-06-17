@@ -6,8 +6,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/generic_build.yml
+  upload_artifact:
+    runs-on: "ubuntu-latest"
     steps:
+      - uses: actions/checkout@4
       - name: "Build Project"
         uses: ./.github/workflows/generic_build.yml
       - name: "Upload Artifacts"
