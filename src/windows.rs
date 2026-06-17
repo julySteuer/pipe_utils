@@ -1,4 +1,3 @@
-
 use std::{
     io::{self, PipeReader, PipeWriter},
     os::windows::io::{AsHandle, OwnedHandle},
@@ -16,14 +15,18 @@ pub fn dup_handle_to_pipe_writer(as_handle: impl AsHandle) -> io::Result<PipeWri
     dup_handle(as_handle).map(|cloned_fd| PipeWriter::from(cloned_fd))
 }
 
-pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {
-    dup_handle_to_pipe_reader(io::stdin())
-}
+pub(crate) mod imp {
+    use std::io::{self, PipeReader, PipeWriter};
 
-pub fn dup_stdout_to_pipe_writer() -> io::Result<PipeWriter> {
-    dup_handle_to_pipe_writer(io::stdout())
-}
+    pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {
+        super::dup_handle_to_pipe_reader(io::stdin())
+    }
 
-pub fn dup_stderr_to_pipe_reader() -> io::Result<PipeReader> {
-    dup_handle_to_pipe_reader(io::stderr())
+    pub fn dup_stdout_to_pipe_writer() -> io::Result<PipeWriter> {
+        super::dup_handle_to_pipe_writer(io::stdout())
+    }
+
+    pub fn dup_stderr_to_pipe_reader() -> io::Result<PipeReader> {
+        super::dup_handle_to_pipe_reader(io::stderr())
+    }
 }
