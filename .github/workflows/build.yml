@@ -1,16 +1,14 @@
-name: Build Project
-on: [push]
+name: "Build Project"
+on:
+  push:
+    branches:
+      - '**'
+  
 jobs:
   build:
-    name: "Building project on os ${{ matrix.os }}"
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - name: "Cargo build"
-        run: "ls && cargo build"
-      - name: "Cargo test"
-        run: "cargo test"
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    uses: ./.github/workflows/generic_build.yml
+  upload-artifact:
+    name: "Upload Artifact"
+    uses: actions/upload-artifact@v7
+    with:
+      path: .

@@ -1,0 +1,16 @@
+name: Build Project
+on: [workflow_call]
+jobs:
+  build:
+    name: "Building project on os ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: "Cargo build"
+        run: "cargo build"
+      - name: "Cargo test"
+        run: "cargo test"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]

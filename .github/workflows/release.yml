@@ -1,0 +1,21 @@
+name: "Release"
+on:
+   push:
+     tags:
+       - "v*"
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/generic_build.yml
+  release:
+    name: Create Release
+    uses: comnoco/create-release@v2
+    id: create_releadse
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag_name: ${{ github.ref }}
+      release_name: Release ${{ github.ref }}
+      body: ${{ github.event.head_commit.message }}
+      draft: false
+      prerelease: false
