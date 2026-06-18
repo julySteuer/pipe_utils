@@ -20,6 +20,8 @@ pub(crate) mod imp {
     use std::{
         fs::File,
         io::{self, PipeReader, PipeWriter},
+        os::windows::io::AsHandle,
+        process::ChildStdout,
     };
 
     pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
@@ -40,5 +42,9 @@ pub(crate) mod imp {
 
     pub fn dup_stderr_to_pipe_reader() -> io::Result<PipeReader> {
         dup_handle_to_pipe_reader(io::stderr())
+    }
+
+    pub fn child_stdout_to_pipe_reader(child_stdout: ChildStdout) -> io::Result<PipeReader> {
+        dup_handle_to_pipe_reader(child_stdout.as_handle())
     }
 }
