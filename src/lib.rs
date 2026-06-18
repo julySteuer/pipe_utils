@@ -63,3 +63,48 @@ pub fn get_process_stdio_as_pipe() -> io::Result<(PipeReader, PipeWriter, PipeRe
     let stderr = dup_stderr_to_pipe_reader()?;
     Ok((stdin, stdout, stderr))
 }
+
+#[cfg(test)]
+mod tests {
+    use std::{fs::File, io::{self, Read, Write}, process::{Command, Stdio}};
+
+use crate::{os::imp::{file_to_pipe_reader, file_to_pipe_writer}, piped_child_to_reader};
+
+    #[test]
+    fn test_read_from_file() -> io::Result<()> {
+        let mut file = File::create("test_file_1")?;
+        file.write_all("hello world".as_bytes())?;
+        file.flush()?;
+        drop(file);
+        let mut file = File::open("test_file_1")?;
+        let mut reader = file_to_pipe_reader(file)?;
+        let mut str = String::new();
+        reader.read_to_string(&mut str)?;
+        assert_eq!(str, "hello world");
+        Ok(())
+    }
+
+    #[test]
+    fn test_write_to_file() -> io::Result<()> {
+        let mut file = File::create("test_file_2")?;
+        let mut writer = file_to_pipe_writer(file)?;
+        writer.write_all("hello world".as_bytes())?;
+        writer.flush()?;
+        drop(writer);
+        let mut file = File::open("test_file_2")?;
+        let mut str = String::new();
+        file.read_to_string(&mut str)?;
+        assert_eq!(str, "hello world");
+        Ok(())
+    }
+
+    #[test]
+    fn piped_child_to_reader_test() -> io::Result<()> {
+        let mut child = Command::new("echo").arg("test").stdout(Stdio::piped()).spawn()?;
+        let mut reader = piped_child_to_reader(&mut child)?.unwrap();
+        let mut str = String::new();
+        reader.read_to_string(&mut str)?;
+        assert_eq!(str, "test\n");
+        Ok(())
+    }
+}
