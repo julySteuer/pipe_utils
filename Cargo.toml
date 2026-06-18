@@ -2,5 +2,10 @@
 name = "pipe_utils"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.87"
+description = "Cross-platform helpers for working with Rust's std::io::pipe()"
+license = "MIT"
+repository = "https://github.com/julySteuer/pipe_utils"
+keywords = ["pipe", "process", "io", "stdin", "stdout"]
 
 [dependencies]
