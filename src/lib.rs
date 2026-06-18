@@ -1,5 +1,4 @@
 use std::{
-    clone,
     fs::File,
     io::{self, PipeReader, PipeWriter, pipe},
     process::{Child, Command},

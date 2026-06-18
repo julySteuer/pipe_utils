@@ -22,6 +22,7 @@ pub(crate) mod imp {
         fs::File,
         io::{self, PipeReader, PipeWriter},
         process::ChildStdout,
+        os::fd::AsFd
     };
 
     pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
