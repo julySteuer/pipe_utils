@@ -76,7 +76,7 @@ use crate::{os::imp::{file_to_pipe_reader, file_to_pipe_writer}, piped_child_to_
         file.write_all("hello world".as_bytes())?;
         file.flush()?;
         drop(file);
-        let mut file = File::open("test_file_1")?;
+        let file = File::open("test_file_1")?;
         let mut reader = file_to_pipe_reader(file)?;
         let mut str = String::new();
         reader.read_to_string(&mut str)?;
@@ -86,7 +86,7 @@ use crate::{os::imp::{file_to_pipe_reader, file_to_pipe_writer}, piped_child_to_
 
     #[test]
     fn test_write_to_file() -> io::Result<()> {
-        let mut file = File::create("test_file_2")?;
+        let file = File::create("test_file_2")?;
         let mut writer = file_to_pipe_writer(file)?;
         writer.write_all("hello world".as_bytes())?;
         writer.flush()?;
