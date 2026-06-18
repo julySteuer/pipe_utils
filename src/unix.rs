@@ -8,11 +8,11 @@ fn dup_fd(as_fd: impl AsFd) -> io::Result<OwnedFd> {
 }
 
 pub fn dup_fd_to_pipe_reader(as_fd: impl AsFd) -> io::Result<PipeReader> {
-    dup_fd(as_fd).map(|cloned_fd| PipeReader::from(cloned_fd))
+    dup_fd(as_fd).map(PipeReader::from)
 }
 
 pub fn dup_fd_to_pipe_writer(as_fd: impl AsFd) -> io::Result<PipeWriter> {
-    dup_fd(as_fd).map(|cloned_fd| PipeWriter::from(cloned_fd))
+    dup_fd(as_fd).map(PipeWriter::from)
 }
 
 pub(crate) mod imp {
@@ -26,11 +26,11 @@ pub(crate) mod imp {
     };
 
     pub fn file_to_pipe_writer(file: File) -> io::Result<PipeWriter> {
-        dup_fd(file).map(|cloned_fd| PipeWriter::from(cloned_fd))
+        dup_fd(file).map(PipeWriter::from)
     }
 
     pub fn file_to_pipe_reader(file: File) -> io::Result<PipeReader> {
-        dup_fd(file).map(|cloned_fd| PipeReader::from(cloned_fd))
+        dup_fd(file).map(PipeReader::from)
     }
 
     pub fn dup_stdin_to_pipe_reader() -> io::Result<PipeReader> {

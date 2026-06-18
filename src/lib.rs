@@ -26,7 +26,7 @@ pub fn piped_child_to_reader(child: &mut Child) -> io::Result<Option<PipeReader>
     child
         .stdout
         .take()
-        .map(|child_stdout| os::imp::child_stdout_to_pipe_reader(child_stdout))
+        .map(os::imp::child_stdout_to_pipe_reader)
         .map_or(Ok(None), |elem| elem.map(Some))
 }
 

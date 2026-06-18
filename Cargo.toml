@@ -7,5 +7,6 @@ description = "Cross-platform helpers for working with Rust's std::io::pipe()"
 license = "MIT"
 repository = "https://github.com/julySteuer/pipe_utils"
 keywords = ["pipe", "process", "io", "stdin", "stdout"]
+exclude = [".github"]
 
 [dependencies]
