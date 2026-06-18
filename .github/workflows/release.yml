@@ -1,4 +1,5 @@
 name: "Release"
+
 on:
   push:
     tags:
@@ -7,16 +8,21 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/generic_build.yml
+
   create_release:
     needs: build
     runs-on: "ubuntu-latest"
+    # Grants the token permission to create the release
+    permissions:
+      contents: write 
     steps:
       - uses: actions/checkout@v4
+
       - name: "Create Release"
         uses: elgohr/Github-Release-Action@v5
         id: create_release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
-          title: ${{ github.ref }}
-          tag:  ${{ github.ref }}
+          title: ${{ github.ref_name }} 
+          tag: ${{ github.ref_name }}   
