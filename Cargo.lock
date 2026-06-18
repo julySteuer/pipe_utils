@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "pipe_utils"
+name = "pipe_bridge"
 version = "0.1.0"
